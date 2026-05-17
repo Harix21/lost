@@ -73,6 +73,16 @@ const ItemService = {
     }
   },
 
+  sendContactMessage: async (id, contactData) => {
+    try {
+      const response = await axios.post(`${API_URL}/items/${id}/contact`, contactData);
+      return response.data;
+    } catch (error) {
+      console.error('Error sending contact message:', error);
+      throw error;
+    }
+  },
+
   deleteItem: async (id) => {
     try {
       await axios.delete(`${API_URL}/items/${id}`);

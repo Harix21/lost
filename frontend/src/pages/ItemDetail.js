@@ -9,7 +9,13 @@ function ItemDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showContact, setShowContact] = useState(false);
-  const [contactMessage, setContactMessage] = useState('');
+  const [contactForm, setContactForm] = useState({
+    senderName: '',
+    senderEmail: '',
+    senderPhone: '',
+    message: ''
+  });
+  const [contactStatus, setContactStatus] = useState(null);
 
   useEffect(() => {
     fetchItem();
@@ -29,11 +35,19 @@ function ItemDetail() {
     }
   };
 
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
-    alert(`Message sent to ${item.contactName}!\n\nYour message has been sent. They will contact you soon.`);
-    setContactMessage('');
-    setShowContact(false);
+    setContactStatus(null);
+
+    try {
+      await ItemService.sendContactMessage(id, contactForm);
+      setContactStatus({ type: 'success', text: `Your message was sent to ${item.contactName}.` });
+      setContactForm({ senderName: '', senderEmail: '', senderPhone: '', message: '' });
+      setShowContact(false);
+    } catch (err) {
+      setContactStatus({ type: 'error', text: 'Unable to send your message. Please try again later.' });
+      console.error(err);
+    }
   };
 
   if (loading) return <div className="loading">Loading item details...</div>;
@@ -83,19 +97,55 @@ function ItemDetail() {
               <p><strong>Phone:</strong> {item.contactPhone}</p>
             </div>
 
+            {contactStatus && (
+              <div className={`message ${contactStatus.type === 'success' ? 'success' : 'error'}`}>
+                {contactStatus.text}
+              </div>
+            )}
+
             <button 
               className="contact-btn"
-              onClick={() => setShowContact(!showContact)}
+              onClick={() => {
+                setShowContact(!showContact);
+                setContactStatus(null);
+              }}
             >
               {showContact ? 'Cancel' : 'Contact Owner'}
             </button>
 
             {showContact && (
               <form className="contact-form" onSubmit={handleContactSubmit}>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    name="senderName"
+                    value={contactForm.senderName}
+                    onChange={(e) => setContactForm({ ...contactForm, senderName: e.target.value })}
+                    placeholder="Your name"
+                    required
+                  />
+                  <input
+                    type="email"
+                    name="senderEmail"
+                    value={contactForm.senderEmail}
+                    onChange={(e) => setContactForm({ ...contactForm, senderEmail: e.target.value })}
+                    placeholder="Your email"
+                    required
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="tel"
+                    name="senderPhone"
+                    value={contactForm.senderPhone}
+                    onChange={(e) => setContactForm({ ...contactForm, senderPhone: e.target.value })}
+                    placeholder="Your phone"
+                  />
+                </div>
                 <textarea
                   placeholder="Write your message here..."
-                  value={contactMessage}
-                  onChange={(e) => setContactMessage(e.target.value)}
+                  value={contactForm.message}
+                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                   rows="4"
                   required
                 />

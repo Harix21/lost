@@ -1,6 +1,8 @@
 package com.lostandfound.controller;
 
+import com.lostandfound.dto.ContactRequest;
 import com.lostandfound.dto.ItemDTO;
+import com.lostandfound.service.EmailService;
 import com.lostandfound.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private EmailService emailService;
 
     // Get all items
     @GetMapping
@@ -89,6 +94,39 @@ public class ItemController {
             return ResponseEntity.ok(updatedItem);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Contact item owner by email
+    @PostMapping("/{id}/contact")
+    public ResponseEntity<Map<String, String>> contactItemOwner(
+            @PathVariable Long id,
+            @RequestBody ContactRequest contactRequest
+    ) {
+        try {
+            ItemDTO item = itemService.getItemById(id);
+            String subject = "Lost & Found inquiry for item: " + item.getTitle();
+            String body = String.format(
+                    "<p>You have a new message about your item <strong>%s</strong>.</p>" +
+                    "<p><strong>From:</strong> %s</p>" +
+                    "<p><strong>Email:</strong> %s</p>" +
+                    "<p><strong>Phone:</strong> %s</p>" +
+                    "<p><strong>Message:</strong></p><p>%s</p>",
+                    item.getTitle(),
+                    contactRequest.getSenderName(),
+                    contactRequest.getSenderEmail(),
+                    contactRequest.getSenderPhone(),
+                    contactRequest.getMessage()
+            );
+            emailService.sendContactEmail(item.getContactEmail(), subject, body, contactRequest.getSenderEmail());
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Your message has been sent to the owner.");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Failed to send message. Please try again later.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
