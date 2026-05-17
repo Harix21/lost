@@ -1,0 +1,222 @@
+.item-detail {
+  padding: 20px 0;
+}
+
+.item-detail-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.item-image-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.no-image {
+  width: 100%;
+  height: 400px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.item-info-section h1 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.item-header-info {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.status-badge,
+.category-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge {
+  background-color: #667eea;
+  color: white;
+}
+
+.status-badge.lost {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.found {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.claimed {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.category-badge {
+  background-color: #e8e8ff;
+  color: #667eea;
+}
+
+.description-box {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border-left: 4px solid #667eea;
+}
+
+.description-box h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.description-box p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.detail-item label {
+  display: block;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.detail-item p {
+  color: #333;
+  font-size: 16px;
+}
+
+.contact-section {
+  border-top: 2px solid #f0f0f0;
+  padding-top: 20px;
+}
+
+.contact-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.contact-info {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.contact-info p {
+  color: #666;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.contact-info strong {
+  color: #333;
+}
+
+.contact-btn {
+  background-color: #667eea;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.contact-btn:hover {
+  background-color: #764ba2;
+}
+
+.contact-form {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.send-btn {
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.send-btn:hover {
+  background-color: #218838;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+}
+
+.error {
+  color: #d9534f;
+  background-color: #f2dede;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .item-detail-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}

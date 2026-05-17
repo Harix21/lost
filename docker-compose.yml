@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: lost_found_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lost_found_db
+      MYSQL_USER: lostandfound
+      MYSQL_PASSWORD: password123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - lost_found_network
+
+  adminer:
+    image: adminer
+    container_name: lost_found_adminer
+    ports:
+      - "8081:8080"
+    networks:
+      - lost_found_network
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
+
+networks:
+  lost_found_network:
+    driver: bridge
